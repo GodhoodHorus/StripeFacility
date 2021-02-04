@@ -1,4 +1,6 @@
 # StripeFacility
+## STILL IN DEV
+
 A CodeIgniter 4 Stripe implementation to make your life easy
 
 So when i have make this libray i was trying to keep in my mind to make your programmation with the Stripe API easy.
@@ -6,7 +8,7 @@ So when i have make this libray i was trying to keep in my mind to make your pro
 You can clone this library inside the ThirdParty folder, or clone it by using composer
 
 ```
-need to register to the composer package
+composer require godhoodhorus/stripe-facility
 ```
 
 ## Configure the .env
