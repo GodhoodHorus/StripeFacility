@@ -5,7 +5,7 @@ A CodeIgniter 4 Stripe implementation to make your life easy
 
 So when i have make this libray i was trying to keep in my mind to make your programmation with the Stripe API easy.
 
-You can clone this library inside the ThirdParty folder, or clone it by using composer
+You can clone this library inside the ThirdParty folder, or install it by using composer
 
 ```
 composer require godhoodhorus/stripe-facility
@@ -41,15 +41,25 @@ WEBHOOK_SECRET_CUSTOMER = your webhook key
 
 ```
 
-### Call the class
+### Exemple Webhook
 
-you can call the class by using
-
+```php
+// Use it inside a codeigniter controller method 
+// ex : $routes->match(['get', 'post'], '/stripe/webhook/invoice', 'Class::method');
+$stripeFacility = new \StripeFacility\StripeFacility();
+$webhookInvoice = $stripeFacility->webhookManager($this->request, 'invoice');
 ```
-new \StripeFacility\StripeFacility();
+
+### Exemple API
+
+```php
+// Use it inside a codeigniter controller method 
+// ex : $routes->match(['get', 'post'], '/stripe/webhook/invoice', 'Class::method');
+$stripeFacility = new \StripeFacility\StripeFacility();
+$stripeApiCustomers = $stripeFacility->getApiCustomers();
+$stripeAllCustomers = $stripeApiCustomers->getAllCustomers($limit);
 ```
 
-API Communications will be finish later after i have finished my work app
 
 ### Todo
 
