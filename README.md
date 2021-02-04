@@ -54,7 +54,6 @@ $webhookInvoice = $stripeFacility->webhookManager($this->request, 'invoice');
 
 ```php
 // Use it inside a codeigniter controller method 
-// ex : $routes->match(['get', 'post'], '/stripe/webhook/invoice', 'Class::method');
 $stripeFacility = new \StripeFacility\StripeFacility();
 $stripeApiCustomers = $stripeFacility->getApiCustomers();
 $stripeAllCustomers = $stripeApiCustomers->getAllCustomers($limit);
