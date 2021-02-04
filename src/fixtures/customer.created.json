@@ -1,0 +1,23 @@
+{
+    "_meta": {
+        "template_version": 0
+    },
+    "fixtures": [
+        {
+            "name": "customer",
+            "path": "/v1/customers",
+            "method": "post",
+            "params": {
+                "email": "email@try.com",
+                "address": {
+                    "line1": "185 avenue Twitch",
+                    "line2": "Batiment 1585",
+                    "city": "City",
+                    "postal_code": "Code",
+                    "country": "FR"
+                },
+                "description": "A description"
+            }
+        }
+    ]
+}

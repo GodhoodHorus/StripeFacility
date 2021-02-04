@@ -1,0 +1,22 @@
+{
+    "name": "godhoodhorus/stripe-facility",
+    "description": "A CodeIgniter 4 stripe integration to make your life easy",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "GodhoodHorus",
+            "email": "webmaster@neo-novarion.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.2",
+        "stripe/stripe-php": "^7.67"
+    },
+    "autoload": {
+        "psr-4": {
+            "StripeFacility\\": "src/"
+        }
+    }
+}
