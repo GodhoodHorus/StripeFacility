@@ -1,23 +1,13 @@
-<?php namespace StripeFacility\WebhookEndpoints;
+<?php namespace StripeFacility;
 
-
-use CodeIgniter\HTTP\Exceptions\HTTPException;
 use CodeIgniter\HTTP\IncomingRequest;
-use CodeIgniter\HTTP\RedirectResponse;
-use CodeIgniter\HTTP\Response;
 use Stripe\Event;
 
-interface Webhook
-{
-    public function setWebhookKey(string $key);
-    public function getWebhookKey();
-    public function verifyStripeSignature(IncomingRequest $request, string $webhookKey);
-}
 
-
-class WebhookCustomers implements Webhook
+class Webhook
 {
     private $webhookSecret;
+    
 
     /**
      * setWebhookSecret function
@@ -27,9 +17,9 @@ class WebhookCustomers implements Webhook
      * !IMPORTANT :: You should pass your custom WebhookSecret
      * 
      * @param string $key 
-     * @return WebhookCustomers 
+     * @return Webhook
      */
-    public function setWebhookKey(string $key): WebhookCustomers
+    public function setWebhookKey(string $key): Webhook
     {
         $this->webhookSecret = $key;
         return $this;
@@ -48,63 +38,54 @@ class WebhookCustomers implements Webhook
         return $this->webhookSecret;
     }
 
-    
     /**
      * verifyStripeSignature function
      * 
-     * This function verify the Authenticity
-     * of your stripe webhook payload.
+     * Verify that the webhook is send by Stripe
      * 
-     * @param IncomingRequest $request
-     * @param Response $response
-     * @param string $webhookKey 
-     * @return Event|RedirectResponse 
-     * @throws ReflectionException 
-     * @throws HTTPException 
+     * @param IncomingRequest $request 
+     * @return int|string|Event|void 
      */
-    public function verifyStripeSignature(IncomingRequest $request, string $webhookKey)
+    public function verifyStripeSignature(IncomingRequest $request)
     {
-        
         $sig_header = $request->getServer('HTTP_STRIPE_SIGNATURE');
-        $event = null;
 
         try 
         {
             if ($sig_header)
             {
                 $payload = $request->getBody();
-                
+                $event = null;
 
-                if ($this->webhookSecret !== null)
+                if (!empty($this->webhookSecret))
                 {
                     $event = \Stripe\Webhook::constructEvent(
                         $payload,
                         $sig_header,
-                        $webhookKey
+                        $this->webhookSecret
                     );
+
+                    return $event;
                 }
                 else
                 {
-                    throw new \ErrorException('The webhook secret for the Customer endpoints is empty', 500, 3);
+                    throw new \Exception("The webhook secret is empty");
                 }
             }
             else
             {
-                throw new \ErrorException('The Stripe server signature is not present', 500, 3);
+                throw new \Exception('The Stripe server signature is not present');
             }
 
-        } catch (\ErrorException $e) {
-            return $e;
+        } catch (\Exception $e) {
+            return d($e->getMessage(), $e->getFile(), $e->getLine());
             exit();
         } catch(\UnexpectedValueException $e) {
-            return $e;
+            return d($e->getMessage(), $e->getFile(), $e->getLine());
             exit();
         } catch(\Stripe\Exception\SignatureVerificationException $e) {
-            return $e;
+            return d($e->getMessage(), $e->getFile(), $e->getLine());
             exit();
         }
-        
-        return $event;
     }
-
 }

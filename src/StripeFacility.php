@@ -1,5 +1,8 @@
 <?php namespace StripeFacility;
 
+use StripeFacility\ApiCommunication\ApiInvoiceItems;
+use StripeFacility\ApiCommunication\ApiInvoices;
+
 class StripeFacility extends \Stripe\Stripe
 {
     protected $environnement;
@@ -31,31 +34,31 @@ class StripeFacility extends \Stripe\Stripe
 
         switch ($webhookEvenType) {
             case 'invoice':
-                $webhook = new \StripeFacility\WebhookEndpoints\WebhookInvoices();
+                $webhook = new \StripeFacility\Webhook();
 
                 if ($this->environnement === 'development')
                 {
                     $webhook->setWebhookKey($this->webhookCliKey);
-                    $evt = $webhook->verifyStripeSignature($request, $webhook->getWebhookKey());
+                    $evt = $webhook->verifyStripeSignature($request);
                 }
                 else
                 {
                     $webhook->setWebhookKey(\getenv('WEBHOOK_SECRET_INVOICE'));
-                    $event = $webhook->verifyStripeSignature($request, $webhook->getWebhookKey());
+                    $evt = $webhook->verifyStripeSignature($request);
                 }
                 break;
             case 'customer':
-                $webhook = new \StripeFacility\WebhookEndpoints\WebhookCustomers();
+                $webhook = new \StripeFacility\Webhook();
 
                 if ($this->environnement === 'development')
                 {
                     $webhook->setWebhookKey($this->webhookCliKey);
-                    $event = $webhook->verifyStripeSignature($request, $webhook->getWebhookKey());
+                    $evt = $webhook->verifyStripeSignature($request);
                 }
                 else
                 {
                     $webhook->setWebhookKey(\getenv('WEBHOOK_SECRET_CUSTOMER'));
-                    $event = $webhook->verifyStripeSignature($request, $webhook->getWebhookKey());
+                    $evt = $webhook->verifyStripeSignature($request);
                 }
                 break;
             default:
@@ -104,6 +107,34 @@ class StripeFacility extends \Stripe\Stripe
     public function getApiCustomers()
     {
         $api = new \StripeFacility\ApiCommunication\ApiCustomers();
+        $api->setApiSecretKey($this->privateKey);
+        return $api;
+    }
+
+    /**
+     * getApiInvoices function 
+     * 
+     * Return a class Instance of the ApiInvoices
+     * 
+     * @return ApiInvoices 
+     */
+    public function getApiInvoices()
+    {
+        $api = new \StripeFacility\ApiCommunication\ApiInvoices();
+        $api->setApiSecretKey($this->privateKey);
+        return $api;
+    }
+
+    /**
+     * getApiInvoiceItems function
+     * 
+     * Return a class Instance of the ApiInvoiceItems
+     * 
+     * @return ApiInvoiceItems 
+     */
+    public function getApiInvoiceItems()
+    {
+        $api = new \StripeFacility\ApiCommunication\ApiInvoiceItems();
         $api->setApiSecretKey($this->privateKey);
         return $api;
     }
