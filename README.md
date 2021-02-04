@@ -39,6 +39,16 @@ WEBHOOK_SECRET_CUSTOMER = your webhook key
 
 ```
 
+### Call the class
+
+you can call the class by using
+
+```
+new \StripeFacility\StripeFacility();
+```
+
+API Communications will be finish later after i have finished my work app
+
 ### Todo
 
 - [ ] Add all webhooks endpoints
